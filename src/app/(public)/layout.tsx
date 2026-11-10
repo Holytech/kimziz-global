@@ -1,22 +1,30 @@
+import type { Metadata } from "next";
 import { Shell } from "@/components/shell";
 import { getSite } from "@/lib/data";
+import { buildDynamicMetadata, buildJsonLd } from "@/lib/seo";
+
 export const dynamic = "force-dynamic";
-export async function generateMetadata() {
+
+export async function generateMetadata(): Promise<Metadata> {
   const site = await getSite();
-  return {
-    title: { absolute: site.seoTitle },
-    description: site.seoDescription,
-    openGraph: {
-      title: site.seoTitle,
-      description: site.seoDescription,
-      ...(site.socialImage ? { images: [site.socialImage] } : {}),
-    },
-  };
+  return buildDynamicMetadata(site);
 }
+
 export default async function PublicLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <Shell site={await getSite()}>{children}</Shell>;
+  const site = await getSite();
+  const jsonLd = buildJsonLd(site);
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <Shell site={site}>{children}</Shell>
+    </>
+  );
 }

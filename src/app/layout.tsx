@@ -1,28 +1,23 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
+import { rootMetadata, defaultViewport } from "@/lib/seo";
 import "./globals.css";
-export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
-  ),
-  title: {
-    default: "Kimziz Global Links",
-    template: "%s | Kimziz Global Links",
-  },
-  description: "Importation, exportation and car enquiries in Apapa, Lagos.",
-  robots: {
-    index: process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true",
-    follow: process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true",
-  },
-  icons: { icon: "/icon.svg" },
-};
+
+export const metadata: Metadata = rootMetadata;
+export const viewport: Viewport = defaultViewport;
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html
+      lang="en"
+      dir="ltr"
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{
