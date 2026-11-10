@@ -71,7 +71,7 @@ Provide a protected admin dashboard so routine content and inventory updates do 
 - Do not invent service routes, founding dates, performance statistics, testimonials, partnerships, or opening hours.
 - Cars remain within the main website. The unfinished answer to question 8 does not establish a separate car brand.
 - Navy/gold, switchable light/dark themes, subtle motion, mobile-first layouts, and accessible controls follow the discovery answers.
-- The exact source logo to refine remains unresolved; palette selection alone does not identify the official logo.
+- The user approved the blue/gold globe, K, cargo and car logo on 10 November 2026, saved in `public/brand/kimziz-logo.png`.
 - Media rights, policy wording, and actual inventory need evidence before publication. Keep unsupported material out of the live site.
 
 ## Acceptance criteria

@@ -7,7 +7,7 @@ export const defaultSite: Site = {
   address:
     "Office 004, second floor, Scorpio Block, Eliganza Plaza, Apapa, Lagos",
   registration: "RC 1922809",
-  logo: "",
+  logo: "/brand/kimziz-logo-transparent.png",
   hours: "",
   history: "",
   leadership: "",

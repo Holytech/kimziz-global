@@ -1,8 +1,9 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ArrowUpRight, Menu, Moon, Sun, X, MoveUpRight } from "lucide-react";
+import { ArrowUpRight, Menu, Moon, Sun, X } from "lucide-react";
 import { Site, whatsappUrl } from "@/lib/model";
 import { track } from "@vercel/analytics";
 export function Enquiry({
@@ -38,17 +39,21 @@ export function Enquiry({
 export function Brand({ site }: { site: Site }) {
   return (
     <Link href="/" className="brand" aria-label={`${site.name} home`}>
-      {site.logo ? (
-        <img src={site.logo} alt={site.name} />
+      {site.logo &&
+      ![
+        "/brand/kimziz-logo.png",
+        "/brand/kimziz-logo-transparent.png",
+      ].includes(site.logo) ? (
+        <img src={site.logo} alt={site.name} className="brand-logo" />
       ) : (
-        <>
-          <span className="brand-symbol">
-            <MoveUpRight strokeWidth={1.4} />
-          </span>
-          <span>
-            KIMZIZ<small>GLOBAL LINKS LTD.</small>
-          </span>
-        </>
+        <Image
+          src="/brand/kimziz-logo-transparent.png"
+          alt={site.name}
+          width={84}
+          height={84}
+          className="brand-logo"
+          priority
+        />
       )}
     </Link>
   );

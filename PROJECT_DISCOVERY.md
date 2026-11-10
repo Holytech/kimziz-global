@@ -138,7 +138,7 @@ Which existing logo is the official one? Should it remain unchanged, be refined 
 
 **Answer:**
 
-Just refine the image
+Use the blue/gold globe, K, cargo and car logo supplied on 10 November 2026. Keep the artwork unchanged and use it on the website and in social-sharing previews. Source asset: `public/brand/kimziz-logo.png`. Follow-up: remove the white background for website use; display `public/brand/kimziz-logo-transparent.png` on light and dark themes.
 
 ### 15. Colour palette
 

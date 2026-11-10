@@ -12,7 +12,7 @@ const groups: { title: string; fields: [keyof Site, string, boolean?][] }[] = [
       ["address", "Office address", true],
       ["registration", "Registration number"],
       ["hours", "Opening hours (leave blank if unknown)"],
-      ["logo", "Logo URL (blank uses temporary wordmark)"],
+      ["logo", "Logo URL (blank uses approved Kimziz logo)"],
     ],
   },
   {

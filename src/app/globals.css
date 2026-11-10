@@ -1541,3 +1541,31 @@ dl {
     transition: none !important;
   }
 }
+
+/* Transparent logo: no rectangular tile on light or dark surfaces. */
+.brand .brand-logo {
+  width: 84px;
+  height: 84px;
+  object-fit: contain;
+  border-radius: 0;
+  background: transparent;
+}
+footer .brand .brand-logo {
+  width: 112px;
+  height: 112px;
+}
+.admin-sidebar .brand .brand-logo {
+  width: 84px;
+  height: 84px;
+}
+@media (max-width: 800px) {
+  .header .brand .brand-logo {
+    width: 68px;
+    height: 68px;
+  }
+}
+/* A fine edge keeps the navy lettering legible without a background tile. */
+:root[data-theme="dark"] .brand .brand-logo,
+.admin-sidebar .brand .brand-logo {
+  filter: drop-shadow(0 0 0.75px rgba(255, 255, 255, 0.9));
+}
