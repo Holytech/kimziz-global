@@ -4,8 +4,7 @@ export const defaultSite: Site = {
   phone: "07014615680",
   whatsapp: "2347014615680",
   email: "kimzizdoc@gmail.com",
-  address:
-    "Office 004, second floor, Scorpio Block, Eliganza Plaza, Apapa, Lagos",
+  address: "Eliganza Plaza, Apapa, Lagos",
   registration: "RC 1922809",
   logo: "/brand/kimziz-logo-transparent.png",
   hours: "",
@@ -73,7 +72,7 @@ export const defaultSite: Site = {
       title: "General merchandise",
       description:
         "Talk to us about your sourcing and merchandise requirements.",
-      visible: false,
+      visible: true,
     },
   ],
 };
