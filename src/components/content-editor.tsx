@@ -1,6 +1,7 @@
 "use client";
 import { Site } from "@/lib/model";
 import { Field, useEditor, EditorActions } from "./editor-tools";
+
 const groups: { title: string; fields: [keyof Site, string, boolean?][] }[] = [
   {
     title: "Business details",
@@ -62,28 +63,38 @@ const groups: { title: string; fields: [keyof Site, string, boolean?][] }[] = [
     ],
   },
 ];
+
 export function ContentEditor({
   initial,
   revision,
-}: {
+}: Readonly<{
   initial: Site;
   revision: number;
-}) {
+}>) {
   const editor = useEditor(initial, revision, "site", "site"),
     { value, setValue } = editor;
+
   function set(key: keyof Site, next: unknown) {
     setValue((v) => ({ ...v, [key]: next }));
   }
+
   return (
-    <div className="editor">
-      <p className="notice">
+    <div className="max-w-250">
+      <p className="p-4 sm:p-5 border border-[#b99756] bg-soft rounded-md mb-6 text-sm text-ink">
         Use the media library to upload assets, then paste their URLs here.
         Unknown business facts should stay blank.
       </p>
+
       {groups.map((group) => (
-        <fieldset key={group.title} disabled={editor.busy}>
-          <legend>{group.title}</legend>
-          <div className="field-grid">
+        <fieldset
+          key={group.title}
+          disabled={editor.busy}
+          className="border border-line p-5 sm:p-6 rounded-lg bg-surface mb-6"
+        >
+          <legend className="text-sm font-semibold px-2 text-ink">
+            {group.title}
+          </legend>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
             {group.fields.map(([key, label, area]) => (
               <Field
                 key={key}
@@ -97,9 +108,15 @@ export function ContentEditor({
           </div>
         </fieldset>
       ))}
-      <fieldset disabled={editor.busy}>
-        <legend>Navigation labels</legend>
-        <div className="field-grid">
+
+      <fieldset
+        disabled={editor.busy}
+        className="border border-line p-5 sm:p-6 rounded-lg bg-surface mb-6"
+      >
+        <legend className="text-sm font-semibold px-2 text-ink">
+          Navigation labels
+        </legend>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
           {Object.entries(value.nav).map(([key, label]) => (
             <Field
               key={key}
@@ -110,11 +127,20 @@ export function ContentEditor({
           ))}
         </div>
       </fieldset>
-      <fieldset disabled={editor.busy}>
-        <legend>Services</legend>
+
+      <fieldset
+        disabled={editor.busy}
+        className="border border-line p-5 sm:p-6 rounded-lg bg-surface mb-6"
+      >
+        <legend className="text-sm font-semibold px-2 text-ink">
+          Services
+        </legend>
         {value.services.map((service, i) => (
-          <div key={i} className="list-editor-item">
-            <div className="field-grid">
+          <div
+            key={i}
+            className="border-b border-line py-5 first:pt-0 last:border-0"
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
               <Field
                 label="Service title"
                 value={service.title}
@@ -127,10 +153,11 @@ export function ContentEditor({
                   )
                 }
               />
-              <label className="check">
+              <label className="flex items-center gap-2.5 text-sm text-ink font-medium cursor-pointer pt-6">
                 <input
                   type="checkbox"
                   checked={service.visible}
+                  className="w-4 h-4 accent-gold cursor-pointer"
                   onChange={(e) =>
                     set(
                       "services",
@@ -157,9 +184,10 @@ export function ContentEditor({
                 }
               />
             </div>
-            <div className="list-toolbar">
+            <div className="flex items-center gap-2.5 mt-3 flex-wrap">
               <button
-                className="button secondary"
+                type="button"
+                className="inline-flex items-center justify-center gap-2 min-h-9.5 px-3.5 py-1.5 bg-transparent text-ink border border-line rounded-[3px] text-xs font-semibold hover:bg-soft transition-colors cursor-pointer disabled:opacity-55"
                 disabled={i === 0}
                 onClick={() => {
                   const list = [...value.services];
@@ -170,13 +198,21 @@ export function ContentEditor({
                 Move up
               </button>
               <button
-                className="button secondary"
-                onClick={() => {
-                  if (confirm("Remove this service from the draft?"))
+                type="button"
+                className="inline-flex items-center justify-center gap-2 min-h-9.5 px-3.5 py-1.5 bg-transparent text-ink border border-line rounded-[3px] text-xs font-semibold hover:bg-soft transition-colors cursor-pointer"
+                onClick={async () => {
+                  const ok = await editor.confirm({
+                    title: "Remove service?",
+                    description: `Are you sure you want to remove "${service.title || "this service"}" from the draft?`,
+                    confirmLabel: "Remove",
+                    variant: "danger",
+                  });
+                  if (ok) {
                     set(
                       "services",
                       value.services.filter((_, j) => i !== j),
                     );
+                  }
                 }}
               >
                 Remove
@@ -185,7 +221,8 @@ export function ContentEditor({
           </div>
         ))}
         <button
-          className="button secondary"
+          type="button"
+          className="mt-4 inline-flex items-center justify-center gap-2 min-h-9.5 px-3.5 py-1.5 bg-transparent text-ink border border-line rounded-[3px] text-xs font-semibold hover:bg-soft transition-colors cursor-pointer"
           onClick={() =>
             set("services", [
               ...value.services,
@@ -196,11 +233,20 @@ export function ContentEditor({
           Add service
         </button>
       </fieldset>
-      <fieldset disabled={editor.busy}>
-        <legend>Social links</legend>
+
+      <fieldset
+        disabled={editor.busy}
+        className="border border-line p-5 sm:p-6 rounded-lg bg-surface mb-6"
+      >
+        <legend className="text-sm font-semibold px-2 text-ink">
+          Social links
+        </legend>
         {value.social.map((social, i) => (
-          <div className="list-editor-item" key={i}>
-            <div className="field-grid">
+          <div
+            className="border-b border-line py-5 first:pt-0 last:border-0"
+            key={i}
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
               <Field
                 label="Label"
                 value={social.label}
@@ -227,7 +273,8 @@ export function ContentEditor({
               />
             </div>
             <button
-              className="text-link"
+              type="button"
+              className="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-ink hover:text-gold transition-colors py-1 cursor-pointer"
               onClick={() =>
                 set(
                   "social",
@@ -240,7 +287,8 @@ export function ContentEditor({
           </div>
         ))}
         <button
-          className="button secondary"
+          type="button"
+          className="mt-4 inline-flex items-center justify-center gap-2 min-h-9.5 px-3.5 py-1.5 bg-transparent text-ink border border-line rounded-[3px] text-xs font-semibold hover:bg-soft transition-colors cursor-pointer"
           onClick={() =>
             set("social", [...value.social, { label: "", url: "" }])
           }
@@ -248,6 +296,7 @@ export function ContentEditor({
           Add social link
         </button>
       </fieldset>
+
       <EditorActions editor={editor} id="site" />
     </div>
   );

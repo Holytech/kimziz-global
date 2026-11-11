@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/supabase";
 import { emptyVehicle, vehicleSchema } from "@/lib/model";
 import { VehicleEditor } from "@/components/vehicle-editor";
+
 export default async function EditVehicle({
   params,
   searchParams,
@@ -24,13 +25,14 @@ export default async function EditVehicle({
     .maybeSingle();
   if (error) throw new Error("Unable to load vehicle.");
   if (!data && (await searchParams).new !== "1") notFound();
+
   return (
     <>
-      <div className="admin-heading">
-        <div>
-          <h1>{data ? "Edit vehicle" : "Add a vehicle"}</h1>
-          <p>Reference: {id}</p>
-        </div>
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-medium tracking-tight text-ink mb-1">
+          {data ? "Edit vehicle" : "Add a vehicle"}
+        </h1>
+        <p className="text-xs text-muted font-mono">Reference: {id}</p>
       </div>
       <VehicleEditor
         key={id}

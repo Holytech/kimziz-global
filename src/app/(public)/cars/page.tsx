@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Catalogue } from "@/components/catalogue";
-import { SectionTitle } from "@/components/public-content";
+import { Catalogue } from "@/components/public/cars";
+import { SectionTitle } from "@/components/public/common";
 import { getSite, getListings } from "@/lib/data";
 
 export const metadata: Metadata = {
