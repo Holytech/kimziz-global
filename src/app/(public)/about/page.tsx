@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AboutContent } from "@/components/public-content";
+import { AboutContent } from "@/components/public/about";
 import { getSite } from "@/lib/data";
 
 export const metadata: Metadata = {

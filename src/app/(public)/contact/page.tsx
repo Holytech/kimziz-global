@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ContactContent } from "@/components/public-content";
+import { ContactContent } from "@/components/public/contact";
 import { getSite } from "@/lib/data";
 
 export const metadata: Metadata = {

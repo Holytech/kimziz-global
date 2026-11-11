@@ -10,6 +10,7 @@ import {
   ContactContent,
   VehicleDetail,
 } from "@/components/public-content";
+
 export default async function Preview({
   params,
   searchParams,
@@ -36,14 +37,27 @@ export default async function Preview({
   const { page } = await searchParams;
   return (
     <>
-      <div className="preview-banner">
+      <div className="bg-gold text-navy text-center py-3.5 px-6 text-sm font-medium">
         Private draft preview · Not published{" "}
         {data.kind === "site" && (
           <span>
             {" "}
-            · <a href="?page=home">Home</a> / <a href="?page=about">About</a> /{" "}
-            <a href="?page=services">Services</a> /{" "}
-            <a href="?page=contact">Contact</a>
+            ·{" "}
+            <a href="?page=home" className="underline hover:opacity-80">
+              Home
+            </a>{" "}
+            /{" "}
+            <a href="?page=about" className="underline hover:opacity-80">
+              About
+            </a>{" "}
+            /{" "}
+            <a href="?page=services" className="underline hover:opacity-80">
+              Services
+            </a>{" "}
+            /{" "}
+            <a href="?page=contact" className="underline hover:opacity-80">
+              Contact
+            </a>
           </span>
         )}
       </div>

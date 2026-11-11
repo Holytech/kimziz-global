@@ -22,7 +22,7 @@ export const defaultSite: Site = {
   servicesTitle: "The right connections\nfor your next move.",
   carsTitle: "Your next car starts here.",
   carsIntro:
-    "Explore our published vehicles, or tell us the make, model and budget you have in mind.",
+    "Explore our published vehicles, or tell us the brand, model and budget you have in mind.",
   contactTitle: "Let’s talk about\nyour next move.",
   contactIntro:
     "Have an import, export or vehicle enquiry? Tell us what you have in mind. We’ll take the conversation from there.",

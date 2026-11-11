@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getListings, getSite } from "@/lib/data";
-import { VehicleDetail } from "@/components/public-content";
+import { VehicleDetail } from "@/components/public/cars";
 import { buildVehicleMetadata } from "@/lib/seo";
 
 export async function generateMetadata({
