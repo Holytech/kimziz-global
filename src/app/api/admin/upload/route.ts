@@ -235,7 +235,22 @@ export async function DELETE(request: NextRequest) {
     });
 
     await cloudinary.uploader.destroy(id, { resource_type });
-    await context.client.from("media").delete().eq("id", id);
+    const { error: dbError } = await context.client
+      .from("media")
+      .delete()
+      .eq("id", id);
+
+    if (dbError) {
+      console.error("Database deletion error from media table:", dbError);
+      return NextResponse.json(
+        {
+          error:
+            "Unable to delete media record from database: " +
+            (dbError.message || "Unknown database error"),
+        },
+        { status: 500 },
+      );
+    }
 
     return NextResponse.json({ success: true });
   } catch (err: unknown) {

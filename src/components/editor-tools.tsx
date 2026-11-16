@@ -48,6 +48,7 @@ export function useEditor<T>(
   initialRevision: number,
   id: string,
   kind: "site" | "vehicle",
+  options?: { extraDirty?: boolean },
 ) {
   const [value, setValue] = useState(initial),
     [revision, setRevision] = useState(initialRevision),
@@ -56,7 +57,7 @@ export function useEditor<T>(
     [message, setMessage] = useState(""),
     [error, setError] = useState(false);
   const { confirm, ConfirmDialog } = useConfirm();
-  const dirty = JSON.stringify(value) !== saved;
+  const dirty = JSON.stringify(value) !== saved || Boolean(options?.extraDirty);
   useEffect(() => {
     const handler = (e: BeforeUnloadEvent) => {
       if (dirty) {

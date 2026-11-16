@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Shell } from "@/components/shell";
 import { getSite } from "@/lib/data";
-import { buildDynamicMetadata, buildJsonLd } from "@/lib/seo";
+import { buildDynamicMetadata, buildJsonLd, serializeJsonLd } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +22,7 @@ export default async function PublicLayout({
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
       <Shell site={site}>{children}</Shell>
     </>

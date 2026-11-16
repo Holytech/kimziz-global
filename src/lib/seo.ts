@@ -184,6 +184,14 @@ export function buildDynamicMetadata(site: Site): Metadata {
 }
 
 /**
+ * Safely serializes JSON-LD structured data for embedding inside a <script> tag.
+ * Replaces '<' with '\u003c' to prevent script-breakout XSS attacks.
+ */
+export function serializeJsonLd(data: unknown): string {
+  return JSON.stringify(data).replace(/</g, "\\u003c");
+}
+
+/**
  * Builds schema.org JSON-LD structured data for Google & search crawlers.
  */
 export function buildJsonLd(site: Site) {

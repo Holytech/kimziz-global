@@ -7,3 +7,9 @@ out/
 .DS_Store
 output/
 .playwright-cli/
+
+# Ignored MDs
+PROJECT_BRIEF.md
+PROJECT_DISCOVERY.md
+ADMIN_REQUIREMENTS.md
+improvements.md

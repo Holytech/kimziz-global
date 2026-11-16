@@ -186,6 +186,49 @@ test("Postgres enforces private drafts, admin membership, atomic publishing and 
       await assert.rejects(save(4, "publish"));
     },
   );
+  await t.test(
+    "admin can insert and delete media, while non-admin and anon cannot delete",
+    async () => {
+      await db.exec(
+        `reset role; insert into public.admins(user_id) values ('${admin}');`,
+      );
+      await asUser(admin);
+
+      await db.exec(
+        `insert into public.media(id, url, title, resource_type, bytes, created_by)
+         values ('test-media', 'https://res.cloudinary.com/test/image.jpg', 'Test Asset', 'image', 1024, '${admin}');`,
+      );
+      assert.equal(
+        (await db.query("select * from public.media where id='test-media'"))
+          .rows.length,
+        1,
+      );
+
+      // Non-admin attempts deletion (blocked by RLS)
+      await asUser(outsider);
+      await db.exec("delete from public.media where id='test-media'");
+
+      // Anon attempts deletion (blocked by grants)
+      await db.exec("reset role;set role anon;set request.jwt.claim.sub='';");
+      await assert.rejects(
+        db.exec("delete from public.media where id='test-media'"),
+      );
+
+      // Admin verifies asset still exists and deletes it successfully
+      await asUser(admin);
+      assert.equal(
+        (await db.query("select * from public.media where id='test-media'"))
+          .rows.length,
+        1,
+      );
+      await db.exec("delete from public.media where id='test-media'");
+      assert.equal(
+        (await db.query("select * from public.media where id='test-media'"))
+          .rows.length,
+        0,
+      );
+    },
+  );
   await db.close();
 });
 

@@ -55,7 +55,7 @@ create table public.media (
 );
 alter table public.media enable row level security;
 revoke all on public.media from anon, authenticated;
-grant select, insert, update on public.media to authenticated;
+grant select, insert, update, delete on public.media to authenticated;
 create policy "Admins manage media" on public.media for all to authenticated
   using (exists (select 1 from public.admins where user_id = (select auth.uid())))
   with check (exists (select 1 from public.admins where user_id = (select auth.uid())));

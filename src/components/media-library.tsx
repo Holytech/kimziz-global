@@ -7,6 +7,7 @@ import {
   X,
   AlertCircle,
 } from "lucide-react";
+import { useConfirm } from "./modal";
 
 export type Media = {
   id: string;
@@ -246,10 +247,48 @@ export function MediaLibrary({
   enabled: boolean;
 }) {
   const [media, setMedia] = useState(initial),
-    [message, setMessage] = useState("");
+    [message, setMessage] = useState(""),
+    [error, setError] = useState(""),
+    [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const { confirm, ConfirmDialog } = useConfirm();
+
+  async function handleDelete(m: Media) {
+    const ok = await confirm({
+      title: "Delete media asset?",
+      description: `Are you sure you want to permanently delete "${m.title}"? If this asset is used in published content or vehicles, its image will no longer load.`,
+      confirmLabel: "Delete asset",
+      variant: "danger",
+    });
+    if (!ok) return;
+
+    setDeletingId(m.id);
+    setError("");
+    setMessage("");
+
+    try {
+      const res = await fetch("/api/admin/upload", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: m.id, resource_type: m.resource_type }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        throw new Error(data.error || "Failed to delete media asset.");
+      }
+      setMedia((prev) => prev.filter((item) => item.id !== m.id));
+      setMessage(`Deleted "${m.title}".`);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Deletion failed.";
+      setError(msg);
+    } finally {
+      setDeletingId(null);
+    }
+  }
 
   return (
     <>
+      {ConfirmDialog}
       {enabled ? (
         <fieldset className="p-4 sm:p-5 border border-[#b99756] bg-soft rounded-[6px] mb-6 text-sm text-ink">
           <legend className="text-sm font-semibold px-2 text-ink">
@@ -276,6 +315,15 @@ export function MediaLibrary({
           className="text-xs text-green-700 dark:text-green-400 mb-4"
         >
           {message}
+        </p>
+      )}
+      {error && (
+        <p
+          role="alert"
+          className="text-xs text-red-600 dark:text-red-400 mb-4 flex items-center gap-1.5"
+        >
+          <AlertCircle size={14} />
+          {error}
         </p>
       )}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -306,6 +354,14 @@ export function MediaLibrary({
               >
                 Open ↗
               </a>
+              <button
+                type="button"
+                disabled={deletingId === m.id}
+                className="text-xs font-semibold text-red-600 dark:text-red-400 hover:underline cursor-pointer disabled:opacity-50"
+                onClick={() => handleDelete(m)}
+              >
+                {deletingId === m.id ? "Deleting..." : "Delete"}
+              </button>
               <button
                 type="button"
                 className="ml-auto inline-flex items-center justify-center min-h-[34px] px-3 py-1 bg-transparent text-ink border border-line rounded-[3px] text-xs font-semibold hover:bg-soft transition-colors cursor-pointer"
