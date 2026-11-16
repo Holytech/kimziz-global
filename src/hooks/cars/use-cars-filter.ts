@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import { Listing } from "@/lib/model";
 
 export const MIN_PRICE = 3_000_000;
-export const DEFAULT_MAX_PRICE = 300_000_000;
+export const DEFAULT_MAX_PRICE = 200_000_000;
 export const STEP = 500_000;
 
 export function useCarsFilter(listings: Listing[]) {
