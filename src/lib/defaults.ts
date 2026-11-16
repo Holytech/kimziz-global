@@ -4,10 +4,9 @@ export const defaultSite: Site = {
   phone: "07014615680",
   whatsapp: "2347014615680",
   email: "kimzizdoc@gmail.com",
-  address:
-    "Office 004, second floor, Scorpio Block, Eliganza Plaza, Apapa, Lagos",
+  address: "Eliganza Plaza, Apapa, Lagos",
   registration: "RC 1922809",
-  logo: "",
+  logo: "/brand/kimziz-logo-transparent.png",
   hours: "",
   history: "",
   leadership: "",
@@ -23,7 +22,7 @@ export const defaultSite: Site = {
   servicesTitle: "The right connections\nfor your next move.",
   carsTitle: "Your next car starts here.",
   carsIntro:
-    "Explore our published vehicles, or tell us the make, model and budget you have in mind.",
+    "Explore our published vehicles, or tell us the brand, model and budget you have in mind.",
   contactTitle: "Let’s talk about\nyour next move.",
   contactIntro:
     "Have an import, export or vehicle enquiry? Tell us what you have in mind. We’ll take the conversation from there.",
@@ -73,7 +72,7 @@ export const defaultSite: Site = {
       title: "General merchandise",
       description:
         "Talk to us about your sourcing and merchandise requirements.",
-      visible: false,
+      visible: true,
     },
   ],
 };

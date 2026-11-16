@@ -70,7 +70,7 @@ Some presentational helper text and interface labels remain in components. Busin
 
 ## Appearance and assets
 
-Read `DESIGN_GUIDE.md`. Navy/gold, mobile-first layouts, light/dark mode, keyboard focus and reduced-motion support. The temporary text wordmark and code-native trade illustration avoid presenting an unconfirmed logo or stock image as a business-owned asset. The supplied flyers remain in `guide_assets/` for reference. Logo refinement is pending identification of the correct source image.
+Read `DESIGN_GUIDE.md`. Navy/gold, mobile-first layouts, light/dark mode, keyboard focus and reduced-motion support. The approved Kimziz logo is stored unchanged in `public/brand/kimziz-logo.png`; the website uses the background-removed variant `public/brand/kimziz-logo-transparent.png`, while the trade illustration remains code-native. The supplied flyers remain in `guide_assets/` for reference. The approved logo also appears in the generated Open Graph/Twitter preview and favicon. Set `NEXT_PUBLIC_SITE_URL` to the deployed HTTPS origin so social crawlers receive public image URLs. Localhost cannot be fetched by social platforms; cached previews may need refreshing after deployment.
 
 ## Search visibility, analytics and release
 

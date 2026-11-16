@@ -9,11 +9,22 @@ export function sameOrigin(
   if (!origin || !host) return false;
   try {
     const url = new URL(origin);
-    return (
-      (url.protocol === "https:" || url.protocol === "http:") &&
-      url.host === host &&
-      url.origin === origin
-    );
+    if (url.protocol !== "https:" && url.protocol !== "http:") return false;
+    if (url.origin !== origin) return false;
+    if (url.host === host) return true;
+
+    // In local development, localhost and 127.0.0.1 on the same port are equivalent
+    const isLocalOrigin =
+      url.hostname === "localhost" || url.hostname === "127.0.0.1";
+    const [hostName, hostPort = url.protocol === "https:" ? "443" : "80"] =
+      host.split(":");
+    const isLocalHost = hostName === "localhost" || hostName === "127.0.0.1";
+    if (isLocalOrigin && isLocalHost) {
+      const urlPort = url.port || (url.protocol === "https:" ? "443" : "80");
+      return urlPort === hostPort;
+    }
+
+    return false;
   } catch {
     return false;
   }

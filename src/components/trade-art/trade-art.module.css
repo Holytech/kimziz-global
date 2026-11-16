@@ -1,0 +1,160 @@
+.globe {
+  transform-origin: 315px 246px;
+}
+
+.meridian {
+  transform-origin: 315px 246px;
+}
+
+.ship {
+  transform-origin: 290px 400px;
+}
+
+.beacon {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Keep the original illustration intact when motion is reduced. */
+@media (prefers-reduced-motion: no-preference) {
+  .badge {
+    animation: badge-float 6s ease-in-out infinite;
+  }
+
+  .statusDot {
+    animation: status-pulse 3s ease-in-out infinite;
+  }
+
+  .globe {
+    animation: globe-drift 18s ease-in-out infinite;
+  }
+
+  .meridian {
+    animation: meridian-turn 12s ease-in-out infinite;
+  }
+
+  .ship {
+    animation: ship-rock 6s ease-in-out infinite;
+  }
+
+  .wave,
+  .waveBack,
+  .waveFront {
+    animation: wave-drift 5s ease-in-out infinite;
+  }
+
+  .waveBack {
+    animation-duration: 7s;
+    animation-delay: -3s;
+    animation-direction: reverse;
+  }
+
+  .waveFront {
+    animation-duration: 6s;
+    animation-delay: -2s;
+  }
+
+  .route {
+    animation: route-flow 3s linear infinite;
+  }
+
+  .beacon {
+    animation: beacon-pulse 4s ease-out infinite;
+  }
+
+  .plane {
+    animation: plane-float 7s ease-in-out infinite;
+  }
+}
+
+@keyframes badge-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes status-pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes ship-rock {
+  0%,
+  100% {
+    transform: translate(-3px, 2px) rotate(-1.4deg);
+  }
+  50% {
+    transform: translate(3px, -6px) rotate(1.4deg);
+  }
+}
+
+@keyframes wave-drift {
+  0%,
+  100% {
+    transform: translate(-14px, 2px);
+  }
+  50% {
+    transform: translate(14px, -3px);
+  }
+}
+
+@keyframes globe-drift {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
+
+@keyframes meridian-turn {
+  0%,
+  100% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(0.35);
+  }
+}
+
+@keyframes route-flow {
+  to {
+    stroke-dashoffset: -48;
+  }
+}
+
+@keyframes beacon-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+@keyframes plane-float {
+  0%,
+  100% {
+    transform: translate(-4px, -2px);
+  }
+  50% {
+    transform: translate(5px, 3px);
+  }
+}

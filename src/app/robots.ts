@@ -1,13 +1,20 @@
 import type { MetadataRoute } from "next";
+import { siteUrl } from "@/lib/seo";
+
 export default function robots(): MetadataRoute.Robots {
-  const enabled = process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true",
-    url = process.env.NEXT_PUBLIC_SITE_URL;
+  const allowIndexing = process.env.NEXT_PUBLIC_ALLOW_INDEXING !== "false";
+
   return {
     rules: {
       userAgent: "*",
-      allow: enabled ? "/" : undefined,
-      disallow: enabled ? ["/admin/", "/api/"] : "/",
+      allow: allowIndexing ? "/" : undefined,
+      disallow: allowIndexing ? ["/admin/", "/api/"] : "/",
     },
-    ...(enabled && url ? { sitemap: `${url}/sitemap.xml` } : {}),
+    ...(allowIndexing
+      ? {
+          sitemap: `${siteUrl}/sitemap.xml`,
+          host: siteUrl,
+        }
+      : {}),
   };
 }
