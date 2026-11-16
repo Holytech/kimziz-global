@@ -7,6 +7,7 @@ import {
   buildDynamicMetadata,
   buildVehicleMetadata,
   buildJsonLd,
+  serializeJsonLd,
   siteUrl,
 } from "../src/lib/seo";
 import { defaultSite } from "../src/lib/defaults";
@@ -122,4 +123,27 @@ test("Robots generates correct crawler rules and host", () => {
   assert.ok(robotRules.rules);
   assert.equal(robotRules.host, siteUrl);
   assert.equal(robotRules.sitemap, `${siteUrl}/sitemap.xml`);
+});
+
+test("serializeJsonLd escapes < to prevent script-breakout XSS", () => {
+  const dangerousSite = {
+    ...defaultSite,
+    name: 'Kimziz </script><script>alert("xss")</script>',
+    seoDescription: "Description with <tags> and </script>",
+  };
+  const jsonLd = buildJsonLd(dangerousSite);
+  const serialized = serializeJsonLd(jsonLd);
+
+  // Must not contain any raw '<' characters
+  assert.equal(serialized.includes("<"), false);
+  // Must contain unicode-escaped '\u003c'
+  assert.ok(serialized.includes("\\u003c/script>"));
+  assert.ok(serialized.includes("\\u003cscript>"));
+
+  // Parsing it back with JSON.parse preserves the original content perfectly
+  const parsed = JSON.parse(serialized);
+  assert.equal(
+    parsed["@graph"][0].name,
+    'Kimziz </script><script>alert("xss")</script>',
+  );
 });

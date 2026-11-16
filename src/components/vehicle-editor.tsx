@@ -16,9 +16,6 @@ export function VehicleEditor({
   revision: number;
   id: string;
 }) {
-  const editor = useEditor(initial, revision, id, "vehicle"),
-    { value, setValue } = editor;
-
   // Local gallery items state (manages both remote uploaded photos and staged local files)
   const [items, setItems] = useState<GalleryItem[]>(() =>
     initial.images.map((img) => ({
@@ -31,6 +28,23 @@ export function VehicleEditor({
 
   // Staged video state (local file awaiting upload on save)
   const [stagedVideo, setStagedVideo] = useState<StagedVideo | null>(null);
+
+  // Baseline saved gallery to track dirty state across saves
+  const [savedImages, setSavedImages] = useState(initial.images);
+
+  // Determine if gallery or staged video has unsaved changes
+  const hasStagedPhotos = items.some((it) => it.file !== undefined);
+  const galleryChanged =
+    hasStagedPhotos ||
+    items.length !== savedImages.length ||
+    items.some(
+      (it, i) =>
+        it.url !== savedImages[i]?.url || it.alt !== savedImages[i]?.alt,
+    );
+  const extraDirty = galleryChanged || stagedVideo !== null;
+
+  const editor = useEditor(initial, revision, id, "vehicle", { extraDirty }),
+    { value, setValue } = editor;
 
   // Upload progress state for save / publish
   const [uploadProgress, setUploadProgress] = useState<{
@@ -75,29 +89,6 @@ export function VehicleEditor({
     };
   }, []);
 
-  // Determine if gallery or video has unsaved changes
-  const hasStagedPhotos = items.some((it) => it.file !== undefined);
-  const galleryChanged =
-    hasStagedPhotos ||
-    items.length !== initial.images.length ||
-    items.some(
-      (it, i) =>
-        it.url !== initial.images[i]?.url || it.alt !== initial.images[i]?.alt,
-    );
-  const videoChanged = stagedVideo !== null || value.video !== initial.video;
-  const isDirty = editor.dirty || galleryChanged || videoChanged;
-
-  // Warn before navigating away if there are unsaved edits or staged files
-  useEffect(() => {
-    const handler = (e: BeforeUnloadEvent) => {
-      if (isDirty) {
-        e.preventDefault();
-      }
-    };
-    window.addEventListener("beforeunload", handler);
-    return () => window.removeEventListener("beforeunload", handler);
-  }, [isDirty]);
-
   function set(key: keyof Vehicle, next: unknown) {
     setValue((v) => ({ ...v, [key]: next }));
   }
@@ -141,7 +132,14 @@ export function VehicleEditor({
         url: it.url || it.previewUrl,
         alt: it.alt,
       }));
-      await editor.save(action, { ...value, images: finalImages }, true);
+      const res = await editor.save(
+        action,
+        { ...value, images: finalImages },
+        true,
+      );
+      if (res && "success" in res && res.success) {
+        setSavedImages(finalImages);
+      }
       return;
     }
 
@@ -325,7 +323,7 @@ export function VehicleEditor({
       });
 
       // Save document to Supabase
-      await editor.save(
+      const res = await editor.save(
         action,
         {
           ...value,
@@ -334,6 +332,9 @@ export function VehicleEditor({
         },
         true,
       );
+      if (res && "success" in res && res.success) {
+        setSavedImages(finalImages);
+      }
     } catch (err) {
       editor.setBusy(false);
       editor.setError(true);
@@ -513,7 +514,7 @@ export function VehicleEditor({
         id={id}
         vehicle
         onSave={handleVehicleSave}
-        isDirty={isDirty}
+        isDirty={editor.dirty}
       />
     </div>
   );
