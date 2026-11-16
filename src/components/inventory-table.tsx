@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import { Listing, priceLabel } from "@/lib/model";
 import { AvailabilityBadge } from "./public/common/availability-badge";
+import { Dropdown } from "./dropdown";
 
 export function InventoryTable({
   rows,
@@ -33,27 +34,29 @@ export function InventoryTable({
             className="border-0 bg-transparent text-sm w-full outline-none text-ink placeholder:text-muted"
           />
         </label>
-        <select
-          aria-label="Publication status"
+        <Dropdown
+          label="Publication status"
+          labelSrOnly
           value={publication}
-          onChange={(e) => setPublication(e.target.value)}
-          className="bg-surface text-ink border border-line rounded px-3.5 py-2.5 min-h-[46px] text-sm outline-none focus:ring-2 focus:ring-gold/50 cursor-pointer"
-        >
-          <option value="">All publication states</option>
-          <option value="published">Published</option>
-          <option value="draft">Draft / archived</option>
-        </select>
-        <select
-          aria-label="Availability"
+          onChange={setPublication}
+          options={[
+            { value: "", label: "All publication states" },
+            { value: "published", label: "Published" },
+            { value: "draft", label: "Draft / archived" },
+          ]}
+        />
+        <Dropdown
+          label="Availability"
+          labelSrOnly
           value={status}
-          onChange={(e) => setStatus(e.target.value)}
-          className="bg-surface text-ink border border-line rounded px-3.5 py-2.5 min-h-[46px] text-sm outline-none focus:ring-2 focus:ring-gold/50 cursor-pointer"
-        >
-          <option value="">All availability</option>
-          <option value="available">Available</option>
-          <option value="reserved">Reserved</option>
-          <option value="sold">Sold</option>
-        </select>
+          onChange={setStatus}
+          options={[
+            { value: "", label: "All availability" },
+            { value: "available", label: "Available" },
+            { value: "reserved", label: "Reserved" },
+            { value: "sold", label: "Sold" },
+          ]}
+        />
       </div>
       <div className="overflow-x-auto border border-line rounded-[5px] bg-surface">
         <table className="w-full text-left text-sm border-collapse">

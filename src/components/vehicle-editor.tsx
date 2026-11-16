@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Vehicle } from "@/lib/model";
 import { Field, useEditor, EditorActions } from "./editor-tools";
+import { Dropdown } from "./dropdown";
 import { VehicleGalleryManager, GalleryItem } from "./vehicle-gallery-manager";
 import { VehicleVideoManager, StagedVideo } from "./vehicle-video-manager";
 
@@ -102,21 +103,14 @@ export function VehicleEditor({
   }
 
   const select = (key: keyof Vehicle, label: string, options: string[]) => (
-    <label
-      className="flex flex-col gap-1.5 text-xs font-semibold text-ink"
+    <Dropdown
       key={key}
-    >
-      {label}
-      <select
-        value={String(value[key])}
-        onChange={(e) => set(key, e.target.value)}
-        className="min-h-[46px] px-3.5 py-2.5 rounded border border-line bg-surface text-ink text-sm outline-none focus:ring-2 focus:ring-gold/50 font-normal cursor-pointer"
-      >
-        {options.map((o) => (
-          <option key={o}>{o}</option>
-        ))}
-      </select>
-    </label>
+      label={label}
+      value={String(value[key])}
+      onChange={(v) => set(key, v)}
+      options={options}
+      disabled={editor.busy}
+    />
   );
 
   async function handleVehicleSave(action: "save" | "publish" | "unpublish") {

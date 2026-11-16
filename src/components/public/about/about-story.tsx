@@ -1,6 +1,6 @@
 import { Site } from "@/lib/model";
 import { Enquiry } from "@/components/shell";
-import { TradeArt } from "@/components/trade-art";
+import { TradeArt } from "@/components/trade-art/trade-art";
 
 export interface AboutStoryProps {
   site: Site;

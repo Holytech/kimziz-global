@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Site } from "@/lib/model";
 import { Enquiry } from "@/components/shell";
-import { TradeArt } from "@/components/trade-art";
+import { TradeArt } from "@/components/trade-art/trade-art";
 
 export interface HomeHeroProps {
   site: Site;

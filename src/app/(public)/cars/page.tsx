@@ -29,7 +29,7 @@ export default async function Cars() {
           description={site.carsIntro}
         />
       </section>
-      <section className="container section section-topless">
+      <section className="container py-10">
         <Catalogue site={site} listings={listings} />
       </section>
     </>

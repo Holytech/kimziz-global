@@ -20,9 +20,9 @@ export async function generateMetadata({
 
 export default async function Car({
   params,
-}: {
+}: Readonly<{
   params: Promise<{ id: string }>;
-}) {
+}>) {
   const { id } = await params;
   const [site, listings] = await Promise.all([getSite(), getListings()]);
   const vehicle = listings.find((v) => v.id === id);
